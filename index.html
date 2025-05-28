@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Platform</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- Font Awesome  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="main-nav">
+            <div class="logo">
+                <h1>Vistora</h1>
+            </div>
+            <div class="nav-links">
+                <a href="products/products.html">Products</a>
+                <a href="cart/cart.html" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <div class="auth-links">
+                    <a href="auth/auth.html" class="login-btn">Login</a>
+                    <a href="auth/auth.html?action=register" class="register-btn">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Welcome to Vistora</h1>
+            <p>Your one-stop shop for all your needs</p>
+            <a href="products/products.html" class="cta-button">Start Shopping</a>
+        </section>
+
+        <section class="featured-products">
+            <h2>Featured Products</h2>
+            <div class="product-grid" id="featured-products">
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Vistora - Making online shopping easier for everyone.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="products/products.html">Products</a></li>
+                    <li><a href="cart/cart.html">Cart</a></li>
+                    <li><a href="auth/auth.html">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: support@vistora.com</p>
+                <p>Phone: +20 101 2345 678</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Vistora. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="utils/storage.js"></script>
+    <script src="utils/auth-status.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

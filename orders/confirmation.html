@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Vistora</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="main-nav">
+            <div class="logo">
+                <a href="../index.html">
+                    <h1>Vistora</h1>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="../products/products.html">Products</a>
+                <a href="../cart/cart.html" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <div class="auth-links">
+                    <!-- Will be populated by auth-status.js -->
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="order-confirmation">
+        <i class="fas fa-check-circle"></i>
+        <h1>Thank You for Your Order!</h1>
+        <p>Your order has been successfully placed and is being processed.</p>
+        <div class="order-number">
+            Order #<span id="order-id"></span>
+        </div>
+
+        <div class="confirmation-details">
+            <div class="confirmation-section">
+                <h2>Order Details</h2>
+                <div id="order-items" class="review-items">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+                <div class="order-totals">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span id="shipping"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax</span>
+                        <span id="tax"></span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="confirmation-section">
+                <h2>Shipping Information</h2>
+                <div id="shipping-details" class="review-content">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="confirmation-section">
+                <h2>Payment Information</h2>
+                <div id="payment-details" class="review-content">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="confirmation-section">
+                <h2>Estimated Delivery</h2>
+                <div class="review-content">
+                    <p>Your order is expected to arrive in 3-5 business days.</p>
+                    <p>You will receive shipping updates via email.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="confirmation-actions">
+            <a href="../products/products.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Continue Shopping
+            </a>
+            <button onclick="printOrder()" class="next-btn">
+                <i class="fas fa-print"></i> Print Order
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>ShopEase - Making online shopping easier for everyone.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="../products/products.html">Products</a></li>
+                    <li><a href="../cart/cart.html">Cart</a></li>
+                    <li><a href="../auth/auth.html">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: support@shopease.com</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 ShopEase. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../utils/storage.js"></script>
+    <script src="../utils/auth-status.js"></script>
+    <script>
+        // Get order ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId');
+
+        // Load order details
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const order = orders.find(o => o.orderId === orderId);
+
+        if (!order) {
+            window.location.href = '../products/products.html';
+        }
+
+        // Populate order details
+        document.getElementById('order-id').textContent = order.orderId;
+
+        // Populate items
+        document.getElementById('order-items').innerHTML = order.items.map(item => `
+            <div class="summary-item">
+                <div class="summary-item-image">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="summary-item-details">
+                    <h4 class="summary-item-name">${item.name}</h4>
+                    <p class="summary-item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+                    <p class="summary-item-quantity">Qty: ${item.quantity}</p>
+                </div>
+            </div>
+        `).join('');
+
+        // Populate totals
+        document.getElementById('subtotal').textContent = `$${order.totals.subtotal.toFixed(2)}`;
+        document.getElementById('shipping').textContent = order.totals.shipping === 0 ? 'FREE' : `$${order.totals.shipping.toFixed(2)}`;
+        document.getElementById('tax').textContent = `$${order.totals.tax.toFixed(2)}`;
+        document.getElementById('total').textContent = `$${order.totals.total.toFixed(2)}`;
+
+        // Populate shipping details
+        document.getElementById('shipping-details').innerHTML = `
+            <p>${order.shipping.firstName} ${order.shipping.lastName}</p>
+            <p>${order.shipping.address}</p>
+            <p>${order.shipping.city}, ${order.shipping.state} ${order.shipping.zip}</p>
+            <p>${order.shipping.phone}</p>
+        `;
+
+        // Populate payment details
+        document.getElementById('payment-details').innerHTML = `
+            <p>${order.payment.cardName}</p>
+            <p>Card ending in ${order.payment.lastFour}</p>
+            <p>Expires: ${order.payment.expiry}</p>
+        `;
+
+        // Print functionality
+        function printOrder() {
+            window.print();
+        }
+    </script>
+</body>
+</html> 

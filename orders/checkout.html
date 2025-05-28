@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Vistora</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="main-nav">
+            <div class="logo">
+                <a href="../index.html">
+                    <h1>Vistora</h1>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="../products/products.html">Products</a>
+                <a href="../cart/cart.html" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <div class="auth-links">
+                    <!-- Will be populated by auth-status.js -->
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="checkout-container">
+        <div class="checkout-progress">
+            <div class="progress-step active" data-step="shipping">
+                <i class="fas fa-truck"></i>
+                <span>Shipping</span>
+            </div>
+            <div class="progress-step" data-step="payment">
+                <i class="fas fa-credit-card"></i>
+                <span>Payment</span>
+            </div>
+            <div class="progress-step" data-step="review">
+                <i class="fas fa-check-circle"></i>
+                <span>Review</span>
+            </div>
+        </div>
+
+        <div class="checkout-content">
+            <div class="checkout-forms">
+                <!-- Shipping Form -->
+                <form id="shipping-form" class="checkout-form active">
+                    <h2>Shipping Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="shipping-first-name">First Name</label>
+                            <input type="text" id="shipping-first-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-last-name">Last Name</label>
+                            <input type="text" id="shipping-last-name" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="shipping-address">Address</label>
+                            <input type="text" id="shipping-address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-city">City</label>
+                            <input type="text" id="shipping-city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-state">State</label>
+                            <select id="shipping-state" required>
+                                <option value="">Select State</option>
+                                <!-- States will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-zip">ZIP Code</label>
+                            <input type="text" id="shipping-zip" required pattern="[0-9]{5}">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="shipping-phone">Phone Number</label>
+                            <input type="tel" id="shipping-phone" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a href="../cart/cart.html" class="back-btn">
+                            <i class="fas fa-arrow-left"></i> Back to Cart
+                        </a>
+                        <button type="submit" class="next-btn">
+                            Continue to Payment <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Payment Form -->
+                <form id="payment-form" class="checkout-form">
+                    <h2>Payment Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="card-name">Name on Card</label>
+                            <input type="text" id="card-name" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="card-number">Card Number</label>
+                            <div class="card-input">
+                                <input type="text" id="card-number" required pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-expiry">Expiry Date</label>
+                            <input type="text" id="card-expiry" required pattern="(0[1-9]|1[0-2])\/[0-9]{2}" placeholder="MM/YY">
+                        </div>
+                        <div class="form-group">
+                            <label for="card-cvv">CVV</label>
+                            <input type="text" id="card-cvv" required pattern="[0-9]{3,4}">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="save-card">
+                                Save card for future purchases
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="back-btn" onclick="showForm('shipping')">
+                            <i class="fas fa-arrow-left"></i> Back to Shipping
+                        </button>
+                        <button type="submit" class="next-btn">
+                            Review Order <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Order Review -->
+                <div id="review-form" class="checkout-form">
+                    <h2>Review Order</h2>
+                    <div class="review-sections">
+                        <div class="review-section">
+                            <h3>Shipping Address</h3>
+                            <div class="review-content" id="review-shipping">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                            <button class="edit-btn" onclick="showForm('shipping')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                        <div class="review-section">
+                            <h3>Payment Method</h3>
+                            <div class="review-content" id="review-payment">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                            <button class="edit-btn" onclick="showForm('payment')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                        <div class="review-section">
+                            <h3>Order Items</h3>
+                            <div class="review-items" id="review-items">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="back-btn" onclick="showForm('payment')">
+                            <i class="fas fa-arrow-left"></i> Back to Payment
+                        </button>
+                        <button type="button" class="submit-btn" onclick="placeOrder()">
+                            Place Order <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="order-summary">
+                <h2>Order Summary</h2>
+                <div class="summary-items" id="summary-items">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+                <div class="summary-details">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span class="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span class="shipping">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax</span>
+                        <span class="tax">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span class="total-amount">$0.00</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Vistora - Making online shopping easier for everyone.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="../products/products.html">Products</a></li>
+                    <li><a href="../cart/cart.html">Cart</a></li>
+                    <li><a href="../auth/auth.html">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: support@vistora.com</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Vistora. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../utils/storage.js"></script>
+    <script src="../utils/auth-status.js"></script>
+    <script src="orders.js"></script>
+</body>
+</html> 
