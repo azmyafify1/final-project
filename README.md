@@ -29,4 +29,4 @@ Includes authentication, product catalog, cart, checkout, orders, wishlist, revi
 - Data saved in localStorage
 
 
-Developed by **Azmy Afifi**
+Developed by **Azmy Afify**
